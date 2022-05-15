@@ -16,18 +16,71 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 _start:
-	# clear all registers
+	# clear necessary registers
 	and	z
-	mva	b
-	mva	c
-	mva	d
-	mva	e
-	mva	g
-	mva	h
 	mva	i
 	mva	j
-	mva	k
-	mva	l
-	mva	m
-	mva	n
-	mva	o
+
+	# we'll write our results to 0x8000 (right outside .text)
+	lnh	0x8
+	mva	i
+
+	# we'll use 0x55 as our right operand
+	lnh	0x5
+	lnl	0x5
+	mva	b
+
+	# 0xff + 0x55
+	lnh	0xf
+	lnl	0xf
+	add	b
+	stb	0x0
+
+	# 0xff - 0x55
+	lnh	0xf
+	lnl	0xf
+	sub	b
+	stb	0x0
+
+	# ~0x55
+	neg	b
+	stb	0x0
+
+	# 0xff & 0x55
+	lnh	0xf
+	lnl	0xf
+	and	b
+	stb	0x0
+
+	# now we'll swap to using 0xff as our right operand
+	lnh	0xf
+	lnl	0xf
+	mva	b
+
+	# 0x55 | 0xff
+	lnh	0x5
+	lnl	0x5
+	orr	b
+	stb	0x0
+
+	# 0x55 ^ 0xff
+	lnh	0x5
+	lnl	0x5
+	eor	b
+	stb	0x0
+
+	# 0x55 << 4
+	lnh	0x5
+	lnl	0x5
+	lsl	0x4
+	stb	0x0
+
+	# 0x55 >> 4
+	lnh	0x5
+	lnl	0x5
+	lsr	0x4
+	stb	0x0
+
+	# return to the start
+	ldl	_start
+	jmp	al
