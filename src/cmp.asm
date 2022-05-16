@@ -37,15 +37,23 @@ _start:
 
 	# clear 'a' to prove we're reading
 	and	z
+	ldb	0x0
+	mva	c
+	ldb	0x1
+	mva	b
 
 	# prepare our call to 'cmp'
 	ldl	cmp
-	ldb	0x1
-	mva	b
-	ldb	0x0
+	lda	c
 	jpl	al
 
 	# write our output to 0x8002
+	mva	b
+	and	z
+	mva	j
+	lnh	0x8
+	mva	i
+	lda	b
 	stb	0x2
 	
 	# return to the start
