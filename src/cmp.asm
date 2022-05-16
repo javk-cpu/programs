@@ -21,6 +21,53 @@ _start:
 	mva	i
 	mva	j
 
+	# we'll be working around 0x8000 (right outside .text)
+	lnh	0x8
+	mva	i
+
+	# we'll store 0xff at 0x8000
+	lnh	0xf
+	lnl	0xf
+	stb	0x0
+
+	# we'll store 0x55 at 0x8001
+	lnh	0x5
+	lnl	0x5
+	stb	0x1
+
+	# clear 'a' to prove we're reading
+	and	z
+
+	# prepare our call to 'cmp'
+	ldl	cmp
+	ldb	0x1
+	mva	b
+	ldb	0x0
+	jpl	al
+
+	# write our output to 0x8002
+	stb	0x2
+	
 	# return to the start
 	ldl	_start
 	jmp	al
+
+
+cmp:
+	# perform the comparison
+	sub	b
+
+	# prepare for our return
+	mva	b
+	and	z
+	lnl	0x1
+	orr	f
+	mva	f
+
+	# move the return value into 'a'
+	and	z
+	orr	b
+
+	# return
+	mvb	ij, kl
+	jpl	al
