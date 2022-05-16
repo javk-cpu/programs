@@ -64,10 +64,7 @@ cmp:
 	orr	f
 	mva	f
 
-	# move the return value into 'a'
-	and	z
-	orr	b
-
 	# return
+	lda	b
 	mvb	ij, kl
 	jpl	al
