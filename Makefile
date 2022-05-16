@@ -22,9 +22,11 @@ AS = javk-as
 
 ALU_TEST_SRC = $(SRC)/alu-test.asm
 
+CMP_SRC = $(SRC)/cmp.asm
+
 
 .PHONY: all
-all: alu-test
+all: alu-test cmp
 
 
 .PHONY: clean
@@ -36,9 +38,18 @@ clean:
 alu-test: $(BUILD)/alu-test
 
 
+.PHONY: cmp
+cmp: $(BUILD)/cmp
+
+
 $(BUILD)/alu-test: $(ALU_TEST_SRC) $(BUILD)
 	$(AS) $(ALU_TEST_SRC)
 	@mv a.out $(BUILD)/alu-test
+
+
+$(BUILD)/cmp: $(CMP_SRC) $(BUILD)
+	$(AS) $(CMP_SRC)
+	@mv a.out $(BUILD)/cmp
 
 
 $(BUILD):
